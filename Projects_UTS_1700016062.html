@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Game Ular Sederhana</title>
+<head>
+      <style type="text/css"> 
+
+    body{
+
+      margin:0;
+   }
+
+
+   * {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  background-color: #05182d;
+}
+
+@-webkit-keyframes backgroundAnimate {
+  from {
+    left: 0;
+    top: 0;
+  }
+  to {
+    left: -10000px;
+    top: -2000px;
+  }
+}
+
+@-moz-keyframes backgroundAnimate {
+  from {
+    left: 0;
+    top: 0;
+  }
+  to {
+    left: -10000px;
+    top: -2000px;
+  }
+}
+
+@-o-keyframes backgroundAnimate {
+  from {
+    left: 0;
+    top: 0;
+  }
+  to {
+    left: -10000px;
+    top: -2000px;
+  }
+}
+
+@keyframes backgroundAnimate {
+  from {
+    left: 0;
+    top: 0;
+  }
+  to {
+    left: -10000px;
+    top: -2000px;
+  }
+}
+
+#back {
+  background: url(http://www.tranexnet.com/img/back.png) repeat 20% 20%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.4;
+  z-index: -1;
+  -webkit-animation-name: backgroundAnimate;
+  -webkit-animation-duration: 500s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-name: backgroundAnimate;
+  -moz-animation-duration: 5s;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-name: backgroundAnimate;
+  -o-animation-duration: 500s;
+  -o-animation-timing-function: linear;
+  -o-animation-iteration-count: infinite;
+  animation-name: backgroundAnimate;
+  animation-duration: 500s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+#front {
+  background: url(http://www.tranexnet.com/img/front.png) repeat 35% 35%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.6;
+  z-index: -1;
+  -webkit-animation-name: backgroundAnimate;
+  -webkit-animation-duration: 300s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-name: backgroundAnimate;
+  -moz-animation-duration: 300s;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-name: backgroundAnimate;
+  -o-animation-duration: 300s;
+  -o-animation-timing-function: linear;
+  -o-animation-iteration-count: infinite;
+  animation-name: backgroundAnimate;
+  animation-duration: 300s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+     </style>
+    <body>       
+
+<div id="back"></div>
+<div id="front"></div>
+
+
+<canvas id="ular" width="800" height="500"></canvas>
+<script>
+   canv = document.getElementById("ular");
+   ctx = canv.getContext("2d");
+   posX=posY= 10;
+   stepX=stepY= 0;
+   obX=obY= 15;
+   score = 0;
+   ular = [];
+   juml = 3;
+   grid = 20;
+   lebar = canv.width;
+   tinggi= canv.height;
+
+   window.onload=function(){
+      document.addEventListener("keydown",tombol);
+   }
+
+function tombol(e){
+   switch (e.keyCode){
+      case 37:
+         stepX=-1;stepY=0;
+         break;
+      case 38:
+         stepX=0;stepY=-1;
+         break;
+      case 39:
+         stepX=1;stepY=0;
+         break;
+      case 40:
+         stepX=0;stepY=1;
+         break;
+      }
+   }
+
+function game(){
+   posX +=stepX;
+   posY +=stepY;
+
+   if(posX < 0)
+      {posX = lebar/grid-1;}
+   if (posX > lebar/grid-1)
+      {posX = 0; }
+   if(posY < 0)
+      {posY = tinggi/grid-1;}
+   if (posY > tinggi/grid-1)
+      {posY = 0; }
+
+   ctx.fillStyle = "SlateBlue";
+   ctx.fillRect(0,0,lebar,tinggi);
+
+   ular.push({x:posX,y:posY});
+   while (ular.length > juml){
+      ular.shift();
+   }
+
+   ctx.fillStyle = "blue";
+   for(var i=0; i<ular.length; i++){
+      ctx.fillRect(ular[i].x*grid,ular[i].y*grid,grid-2,grid-2);
+      if(posX == ular[i].x && posY == ular[i].y){
+         juml = 3;
+         //score = 0;
+      }
+
+   ctx.fillStyle = "lime";
+   ctx.fillRect(posX*grid,posY*grid,grid-2,grid-2);
+
+   //makanan
+   ctx.fillStyle = "maroon";
+   ctx.fillRect(obX*grid,obY*grid,grid-2,grid-2);
+
+   if(posX==obX && posY==obY){
+      juml++;
+      score++;
+      obX = Math.floor(Math.random()*grid-1);
+      obY = Math.floor(Math.random()*grid-1);
+      if(obX < 0 || obX>lebar/grid-1 || obY < 0 || obY>tinggi/grid-1)
+         obX=5;
+         obY=5;
+         }
+      }
+
+      ctx.fillStyle="white";
+      ctx.font = "80px Arial";
+      ctx.fillText(score,lebar/2,tinggi/2-100);
+}
+
+setInterval(game,1000/8);
+</script>
+</body>
+</head>
+</html>
